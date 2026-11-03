@@ -1,0 +1,111 @@
+{
+  "extensions": {
+    "recommendations": [
+      "EditorConfig.EditorConfig",
+      "ms-vscode.cpptools-extension-pack"
+    ]
+  },
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch pzip",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/pzip.debug",
+        "args": [
+          "${workspaceFolder}/tests/input/${input:inputName}",
+          "${workspaceFolder}/tests/output/${input:inputName}/${input:nThreads}.actual",
+          "${input:nThreads}"
+        ],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        "preLaunchTask": "Build",
+        "MIMode": "gdb",
+        "setupCommands": [
+          {
+            "description": "Enable pretty-printing for gdb",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+          },
+          {
+            "description": "Set Disassembly Flavor to Intel",
+            "text": "-gdb-set disassembly-flavor intel",
+            "ignoreFailures": true
+          }
+        ]
+      }
+    ],
+    "compounds": [],
+    "inputs": [
+      {
+        "id": "inputName",
+        "type": "pickString",
+        "description": "Input name",
+        "options": [
+          "tiny",
+          "small",
+          "large",
+        ],
+        "default": "tiny"
+      },
+      {
+        "id": "nThreads",
+        "type": "pickString",
+        "description": "Number of threads",
+        "options": [
+          "2",
+          "4",
+          "8"
+        ],
+        "default": "2"
+      }
+    ]
+  },
+  "settings": {
+    "C_Cpp.default.cStandard": "gnu17",
+    "C_Cpp.default.cppStandard": "gnu++17",
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "C_Cpp.default.intelliSenseMode": "linux-gcc-x64"
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build",
+        "command": "make",
+        "args": [],
+        "type": "shell",
+        "problemMatcher": [
+          "$tsc"
+        ],
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "build"
+      },
+      {
+        "label": "Clean",
+        "command": "make",
+        "args": [
+          "clean"
+        ],
+        "type": "shell",
+        "problemMatcher": [
+          "$tsc"
+        ],
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "build"
+      },
+    ]
+  }
+}
