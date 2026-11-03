@@ -10,15 +10,15 @@
 /**
  * struct shared_state - Data shared by every worker thread
  *
- * @input_chars:	The input characters (a-z) to be zipped
- * @chunk_size:		Number of input characters each thread processes
- * @n_threads:		The number of worker threads
- * @zipped_chars:	The output array of zipped_char structs
- * @zipped_chars_count:	The output count of zipped_char structs
- * @char_frequency:	The output array of total occurrences per letter
- * @local_counts:	Number of zipped_char structs found by each thread
- * @freq_lock:		Protects @char_frequency
- * @barrier:		Waits until every thread has finished counting
+ * @input_chars: The input characters (a-z) to be zipped
+ * @chunk_size:	Number of input characters each thread processes
+ * @n_threads: The number of worker threads
+ * @zipped_chars: The output array of zipped_char structs
+ * @zipped_chars_count: The output count of zipped_char structs
+ * @char_frequency: The output array of total occurrences per letter
+ * @local_counts: Number of zipped_char structs found by each thread
+ * @freq_lock: Protects @char_frequency
+ * @barrier: Waits until every thread has finished counting
  */
 struct shared_state {
 	const char *input_chars;
@@ -73,7 +73,7 @@ static void *pzip_worker(void *arg)
 	if (!local_result)
 		die("malloc", ENOMEM);
 
-	/* Step 1: count consecutive occurrences in this thread's chunk */
+	/* Step 1: count consecutive occurrences in the chunk */
 	for (const char *p = start; p < end;) {
 		char c = *p;
 		const char *run = p;
@@ -114,13 +114,13 @@ static void *pzip_worker(void *arg)
  * pzip() - zip an array of characters in parallel
  *
  * Inputs:
- * @n_threads:		   The number of threads to use in pzip
- * @input_chars:		   The input characters (a-z) to be zipped
- * @input_chars_size:	   The number of characaters in the input file
+ * @n_threads: The number of threads to use in pzip
+ * @input_chars: The input characters (a-z) to be zipped
+ * @input_chars_size: The number of characaters in the input file
  *
  * Outputs:
- * @zipped_chars:       The array of zipped_char structs
- * @zipped_chars_count:   The total count of inserted elements into the zipped_chars array
+ * @zipped_chars: The array of zipped_char structs
+ * @zipped_chars_count: The total count of inserted elements into the zipped_chars array
  * @char_frequency: Total number of occurences
  *
  * NOTE: All outputs are already allocated. DO NOT MALLOC or REASSIGN THEM !!!
